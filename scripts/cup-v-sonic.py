@@ -90,7 +90,7 @@ wdir[wdir <= 0] = wdir + 360
 colors = plt.rcParams["axes.prop_cycle"].by_key()["color"]
 fig = plt.figure(figsize=(10, 4))  # (Width, height) in inches.
 ax = fig.add_subplot(2, 1, 1)
-ax.plot(sonic_df.index, wsp, color=colors[0])
+# ax.plot(sonic_df.index, wsp, color=colors[0])
 ax.plot(cup_df.index, cup_df["wsp"], color=colors[1])
 # ax.set_ylabel("Wind Speed \n"  + r"$\frac{m}{s^{-1}}$", fontsize=12)
 ax.set_ylabel("Wind Speed \n (m s^-1)", fontsize=12)
@@ -98,7 +98,7 @@ ax.set_xticklabels([])
 
 
 ax = fig.add_subplot(2, 1, 2)
-ax.plot(sonic_df.index, wdir, color=colors[0], label="sonic")
+# ax.plot(sonic_df.index, wdir, color=colors[0], label="sonic")
 ax.plot(cup_df.index, cup_df["wdir"], color=colors[1], label="cup")
 ax.set_ylabel("Wind Direction \n (Degs)", fontsize=12)
 ax.set_xlabel("DateTime (HH:MM:SS)", fontsize=12)
@@ -113,3 +113,5 @@ ax.legend(
     fancybox=True,
     shadow=True,
 )
+
+plt.savefig(str(img_dir) + f"/test.png", dpi=300, bbox_inches="tight")
