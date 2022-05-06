@@ -95,7 +95,9 @@ for i in range(len(ubc_winds)):
 
         ###################### plot comparsion ##############################
 
-        wsp_ax.plot(cup_df.index, cup_df["wsp"] * 0.44704, color=colors[i])
+        wsp_ax.plot(
+            cup_df.index, cup_df["wsp"] * 0.44704, color=colors[i]
+        )  # 0.44704 converts wsp from mph to m/s
         wsp_ax.plot(sonic_dfi.index, sonic_dfi["wsp"], color=colors[i], linestyle="--")
 
         wdir_ax.plot(
