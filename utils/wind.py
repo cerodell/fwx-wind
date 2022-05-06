@@ -1,4 +1,5 @@
 import context
+import numpy as np
 import pandas as pd
 
 
@@ -20,7 +21,17 @@ def gettime(time_of_int):
 def get_sonic(filein):
 
     ## open and set headers for sonic dataframe
-    header = ["ID", "U", "V", "W", "units", "sos", "internal temp", "ind1", "ind2"]
+    header = [
+        "ID",
+        "U_eng",
+        "V_eng",
+        "W",
+        "units",
+        "sos",
+        "internal temp",
+        "ind1",
+        "ind2",
+    ]
     # print(filein)
     sonic_df = pd.read_csv(filein, names=header)
     file_date = filein[-15:-7]
@@ -52,9 +63,29 @@ def get_sonic(filein):
     del sonic_df["units"]
     del sonic_df["ind1"]
     del sonic_df["ind2"]
-    sonic_df["U"] = sonic_df["U"].replace("+", "")
-    sonic_df["V"] = sonic_df["V"].replace("+", "")
+    sonic_df["U_eng"] = sonic_df["U_eng"].replace("+", "")
+    sonic_df["V_eng"] = sonic_df["V_eng"].replace("+", "")
     sonic_df["W"] = sonic_df["W"].replace("+", "")
     sonic_df = sonic_df.apply(pd.to_numeric)  # convert all columns of DataFrame
+
+    ## convert u and v to wind speed and direction
+    sonic_df["U_eng"][(sonic_df["U_eng"] > 20) | (sonic_df["U_eng"] < -20)] = sonic_df[
+        "U_eng"
+    ].mean()
+    sonic_df["V_eng"][(sonic_df["V_eng"] > 20) | (sonic_df["V_eng"] < -20)] = sonic_df[
+        "V_eng"
+    ].mean()
+
+    sonic_df["U"] = sonic_df["V_eng"] * -1
+    sonic_df["V"] = sonic_df["U_eng"]
+    # wsp = np.sqrt((sonic_df["U"] ** 2) + (sonic_df["V"] ** 2))
+    wsp = ((sonic_df["U"] ** 2) + (sonic_df["V"] ** 2)) ** 0.5
+
+    sonic_df["wsp"] = wsp
+    # wdir = ((180 / np.pi) * np.arctan2(sonic_df["U"], sonic_df["V"]))
+    wdir = 180 + ((180 / np.pi) * np.arctan2(sonic_df["U"], sonic_df["V"]))
+    # wdir[wdir <= 0] = wdir + 360
+    sonic_df["wdir"] = wdir
+
     sonic_df = sonic_df.reset_index()
     return sonic_df
