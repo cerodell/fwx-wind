@@ -20,8 +20,8 @@ warnings.filterwarnings("ignore")
 file_date = "220504"  # '220504' '220505'
 # ubc_winds =   ["%.2d" % i for i in range(16, 21)]
 ubc_winds = ["%.2d" % i for i in range(1, 16)]
-test_dir = 1  # zero or one options
-direction = "ESE"  # 'NNW' 'ESE' 'SSW'
+test_dir = 0  # zero or one options
+direction = "NNW"  # 'NNW' 'ESE' 'SSW'
 slice_fd = [10, -1]
 ###### END INPUTS ########
 
@@ -125,12 +125,12 @@ for i in range(len(ubc_winds)):
     wsp_ax.set_ylabel("Wind Speed \n (m s^-1)", fontsize=12)
     wsp_ax.set_xticklabels([])
     wdir_ax.set_ylabel("Wind Direction \n (Degs)", fontsize=12)
-    wdir_ax.set_xlabel("Time (SS)", fontsize=12)
+    wdir_ax.set_xlabel("Time (10S)", fontsize=12)
     # myFmt = DateFormatter("%H:%M:%S")
     # wdir_ax.xaxis.set_major_formatter(myFmt)
 
 plt.savefig(
-    str(img_dir) + f"/wind-v-sonic-{direction}-{file_date}.png",
+    str(img_dir) + f"/cups-v-sonic-{direction}-{file_date}.png",
     dpi=300,
     bbox_inches="tight",
 )

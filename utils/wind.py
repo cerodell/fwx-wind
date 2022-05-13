@@ -32,7 +32,7 @@ def get_sonic(filein):
         "ind1",
         "ind2",
     ]
-    # print(filein)
+    print(filein)
     sonic_df = pd.read_csv(filein, names=header)
     file_date = filein[-15:-7]
     ## parse datetime from timestampe in file name
